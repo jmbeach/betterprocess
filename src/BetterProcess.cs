@@ -20,7 +20,7 @@ namespace BetterProcess
             _info = info;
         }
 
-        public void Start()
+        public BetterProcessInfo Start()
         {
             // Inspired by https://stackoverflow.com/a/19049930/1834329
             var info = new Kernel32.STARTUPINFO();
@@ -31,7 +31,7 @@ namespace BetterProcess
 
             info.wShowWindow = windowStyleMap[_info.WindowStyle];
             var arguments = _info.Arguments != null ? $" {_info.Arguments}" : string.Empty;
-            Kernel32.CreateProcess(null,
+            var processData = Kernel32.CreateProcess(null,
                 $"{_info.FileName}{arguments}",
                 IntPtr.Zero,
                 IntPtr.Zero,
@@ -40,9 +40,14 @@ namespace BetterProcess
                 IntPtr.Zero,
                 null,
                 ref info,
-                out var processInfo);
+                out Kernel32.PROCESS_INFORMATION processInfo);
             Kernel32.CloseHandle(processInfo.hProcess);
             Kernel32.CloseHandle(processInfo.hThread);
+            return new BetterProcessInfo
+            {
+                Id = processInfo.dwProcessId,
+                ThreadId = processInfo.dwThreadId
+            };
         }
     }
 }
