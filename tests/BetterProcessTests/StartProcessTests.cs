@@ -28,10 +28,7 @@ namespace BetterProcessTests
             while (!condition() && (System.DateTime.Now - startTime).TotalSeconds < 30)
             {
                 System.Threading.Thread.Sleep(250);
-                if (onFailure != null)
-                {
-                    onFailure();
-                }
+                onFailure?.Invoke();
             }
         }
         
