@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="PInvoke.Kernel32" Version="0.7.78" />
+  </ItemGroup>
+
 </Project>
